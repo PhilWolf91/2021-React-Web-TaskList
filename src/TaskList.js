@@ -20,7 +20,7 @@ class TaskList extends React.Component {
     render(){
 
         let taskList = this.state.tasks.map( ( task, i ) => 
-            <p key={i}> {task} </p>
+            <p key={task.id}> {task.name} </p>
         )
 
         return (

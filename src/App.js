@@ -3,6 +3,7 @@ import './App.css';
 import React from 'react';
 import TaskList from './TaskList';
 import Start from './Start';
+import { Task } from './Models';
 
 class App extends React.Component {
 
@@ -16,24 +17,27 @@ class App extends React.Component {
     this.addTask = this.addTask.bind(this);
   }
 
-
-
   clearTasks(){
     localStorage.setItem('tasks', []);
     this.setState( { tasks: [] })
   }
 
-  addTask(task){
+  addTask(taskName){
 
-    let tasks = this.state.tasks;
+    if(taskName){
+
+      let tasks = this.state.tasks;
+
+      let task = new Task(taskName);
+      task.id = tasks.length + 1;
     
-    tasks.push(task);
+      tasks.push(task);
+  
+      this.setState({ tasks: tasks });
+  
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
 
-    console.log('App: all tasks ', tasks);
-
-    this.setState({ tasks: tasks });
-
-    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
   renderClearButton(){
@@ -55,8 +59,6 @@ class App extends React.Component {
   }
 
   render() {
-
-    console.log('App: render()')
 
     if(this.state.tasks.length === 0){
       return (
