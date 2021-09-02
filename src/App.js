@@ -1,15 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import TaskList from './TaskList';
-import Start from './Start';
+import TaskList from './components/TaskList';
+import Start from './components/Start';
 import { Task } from './Models';
 
 class App extends React.Component {
 
   constructor(){
     super()
-    console.log('App: constructor');
+    
     let tasks = localStorage.getItem('tasks');
     tasks = tasks ? JSON.parse(tasks) : []
 
@@ -27,10 +26,9 @@ class App extends React.Component {
     if(taskName){
 
       let tasks = this.state.tasks;
-
       let task = new Task(taskName);
-      task.id = tasks.length + 1;
-    
+      
+      task.id = new Date();
       tasks.push(task);
   
       this.setState({ tasks: tasks });
@@ -62,21 +60,20 @@ class App extends React.Component {
 
     if(this.state.tasks.length === 0){
       return (
-        <div>
-          {this.renderClearButton()}
+        <div className="App">
           {this.renderNoTasks()}
         </div>
       ) 
     }
     else{
       return (
-        <div>
-          {this.renderClearButton()}
+        <div className="App">
           {this.renderFoundTasks()}
         </div>
       )
     }
   }
+  
 }
 
 export default App;

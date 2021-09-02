@@ -20,11 +20,11 @@ export default class Start extends React.Component {
     render(){
         return(
             <div>
-            <form onSubmit={ this.addTask }>
-                <h1> Enter a task below: </h1>
-                <input name="task" />
-                <button type='submit' > Submit </button>
-            </form>
+                <form onSubmit={ this.addTask }>
+                    <h1> Enter a task below: </h1>
+                    <input name="task" />
+                    <button type='submit' style={{float:'right'}} > Submit </button>
+                </form>
             </div>
         )
     }
