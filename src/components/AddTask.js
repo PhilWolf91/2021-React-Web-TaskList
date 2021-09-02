@@ -1,6 +1,6 @@
 import React from'react';
 
-export default class Start extends React.Component {
+export default class AddTask extends React.Component {
     constructor(props){
         super(props);
         this.addTask = this.addTask.bind(this);

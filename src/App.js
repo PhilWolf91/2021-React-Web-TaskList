@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import TaskList from './components/TaskList';
-import Start from './components/Start';
+import AddTask from './components/AddTask';
 import { Task } from './Models';
 
 class App extends React.Component {
@@ -9,11 +9,13 @@ class App extends React.Component {
   constructor(){
     super()
     
-    let tasks = localStorage.getItem('tasks');
-    tasks = tasks ? JSON.parse(tasks) : []
+    let storedTasks = localStorage.getItem('tasks');
+    let tasks = storedTasks ? JSON.parse(storedTasks) : []; 
+    let hasTasks = tasks.length > 0;
 
-    this.state = { tasks: tasks }
+    this.state = { tasks: tasks, hasTasks: hasTasks };
     this.addTask = this.addTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
 
   clearTasks(){
@@ -38,6 +40,16 @@ class App extends React.Component {
 
   }
 
+  deleteTask(task){
+    let tasks = this.state.tasks.slice();
+    tasks = tasks.filter( t => { return t !== task})
+
+    this.setState( { ...this.state, tasks: tasks } );
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+
   renderClearButton(){
     return(
       <button onClick={() => {this.clearTasks()}}> Clear Tasks</button>
@@ -46,13 +58,13 @@ class App extends React.Component {
 
   renderNoTasks(){
     return(
-      <Start addNewTask={ this.addTask } />
+      <AddTask addNewTask={ this.addTask } />
     )
   }
 
   renderFoundTasks(){
     return (
-      <TaskList addNewTask={ this.addTask } tasks={ this.state.tasks } />
+      <TaskList addNewTask={ this.addTask } tasks={ this.state.tasks } deleteTask={ this.deleteTask } />
     )
   }
 

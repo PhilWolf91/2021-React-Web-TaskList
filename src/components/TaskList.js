@@ -1,5 +1,5 @@
 import React from 'react';
-import Start from './Start';
+import AddTask from './AddTask';
 import EditTask from './EditTask';
 
 class TaskList extends React.Component {
@@ -8,14 +8,12 @@ class TaskList extends React.Component {
         super(props);
 
         this.state = { 
-            tasks: props.tasks,
             selectedTask: null,
             isAddingTask: false
         }
 
         this.addTask = this.addTask.bind(this);
         this.stopEditing = this.stopEditing.bind(this);
-        this.deleteTask = this.deleteTask.bind(this);
         this.showNewTask = this.showNewTask.bind(this);
     }
 
@@ -25,7 +23,7 @@ class TaskList extends React.Component {
     }
 
     editTask(task){
-        this.setState( { tasks: this.state.tasks, selectedTask: task} )
+        this.setState( { ...this.state, selectedTask: task} )
     }
 
     stopEditing(){
@@ -36,35 +34,26 @@ class TaskList extends React.Component {
         this.setState( {...this.state, isAddingTask: true });
     }
 
-    deleteTask(task){
-        let tasks = this.state.tasks.slice();
-        tasks = tasks.filter( t => { return t !== task})
-
-        this.setState({ tasks: tasks, selectedTask: null})
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
     render(){
 
         if(this.state.selectedTask === null){
             
-            let taskList = this.state.tasks.map( ( task, i ) => 
-                <div key={task.id} className="taskBlock" >
-                    <span onClick={ () => this.editTask(task) } > 
-                        {task.name}
-                    </span>
-                    <strong onClick={ () => this.deleteTask(task) } className="deleteButton"> X </strong>
-                </div>
-            )
-
             let isAddingTask = this.state.isAddingTask;
 
             return (
                 <div> 
                     <button onClick={ () => { this.showNewTask() }}> Add New </button>
-                    { isAddingTask && <Start addNewTask={ this.addTask } /> }
-                    { taskList }
+                    { isAddingTask && <AddTask addNewTask={ this.addTask } /> }
+                    { 
+                        this.props.tasks.map( ( task, i ) => 
+                            <div key={task.id} className="taskBlock" >
+                                <span onClick={ () => this.editTask(task) } > 
+                                    {task.name}
+                                </span>
+                                <strong onClick={ () => this.props.deleteTask(task) } className="deleteButton"> X </strong>
+                            </div>
+                        )
+                    }
                 </div>
             )
             
