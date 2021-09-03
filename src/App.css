@@ -7,7 +7,7 @@
 }
 
 .App {
-  width: 50vw;
+  width: 90vw;
   max-width: 500px;
 }
 
@@ -43,6 +43,10 @@ button{
   font-weight: bolder;
 }
 
+button:active{
+  background-color: var(--pink);
+}
+
 .deleteButton{
   color: red;
   float: right;
@@ -65,4 +69,13 @@ button{
   border-style: solid;
   box-shadow: 1px 1px 1px 1px #FF1493;
   font-size: medium;
+}
+
+.timerButton{
+  width: 50%;
+}
+
+#timer{
+  margin-top: 10vh;
+  margin-bottom: 10vh;
 }

@@ -27,11 +27,15 @@ class TaskList extends React.Component {
     }
 
     stopEditing(){
-        this.setState({ tasks: this.state.tasks, selectedTask: null})
+        this.setState({ ...this.state, selectedTask: null})
     }
 
     showNewTask(){
         this.setState( {...this.state, isAddingTask: true });
+    }
+
+    saveTaskEdit(){
+
     }
 
     render(){
@@ -61,7 +65,11 @@ class TaskList extends React.Component {
         else{
 
             return(
-                <EditTask task={this.state.selectedTask} stopEditing={ this.stopEditing } />
+                <EditTask 
+                    task={this.state.selectedTask} 
+                    stopEditing={ this.stopEditing } 
+                    saveTask={ this.saveTaskEdit } 
+                />
             )
             
         }
