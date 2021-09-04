@@ -15,6 +15,7 @@ class TaskList extends React.Component {
         this.addTask = this.addTask.bind(this);
         this.stopEditing = this.stopEditing.bind(this);
         this.showNewTask = this.showNewTask.bind(this);
+        this.saveTaskEdit = this.saveTaskEdit.bind(this);
     }
 
     addTask(task){
@@ -34,8 +35,8 @@ class TaskList extends React.Component {
         this.setState( {...this.state, isAddingTask: true });
     }
 
-    saveTaskEdit(){
-
+    saveTaskEdit(task){
+        this.props.saveTask(task)
     }
 
     render(){

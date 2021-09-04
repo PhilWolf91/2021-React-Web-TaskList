@@ -7,9 +7,14 @@ export default class EditTask extends React.Component{
     constructor(props){
         super(props);
 
+        let formattedTime = '00:00:00'
+        if(props.task.time){
+            formattedTime = this.formatTime(props.task.time);
+        }
+
         this.state = { 
-            task: props.task,
-            totalTime: 0 
+            totalTime: props.task.time || 0 ,
+            formattedTime: formattedTime
         }
         this.goBack = this.goBack.bind(this);
         this.saveTask = this.saveTask.bind(this);
@@ -21,14 +26,32 @@ export default class EditTask extends React.Component{
         this.props.stopEditing();
     }
 
-    saveTask(){
-        this.props.saveTask(this.state)
+    saveTask(e){
+        e.preventDefault();
+
+        if(this.stopWatch){
+            this.stopTimer();
+        }
+
+        let notes = e.target.notes.value;
+        let task = { ...this.props.task, notes: notes, time: this.state.totalTime }
+
+        console.log(task);
+        this.props.saveTask(task);
+    }
+
+    formatTime(seconds){
+        return new Date(seconds * 1000).toISOString().substr(11, 8);
     }
 
     startTimer(){
         
         this.stopWatch = setInterval( () => {
-            this.setState( {...this.state, totalTime: this.state.totalTime += 1 });
+            let currentTotal = this.state.totalTime
+            currentTotal += 1;
+            //this will fail if hours > 24 since its using Date
+            let formatted = this.formatTime(currentTotal);
+            this.setState( {...this.state, totalTime: currentTotal, formattedTime: formatted });
         }, 1000)
         
     }
@@ -40,20 +63,22 @@ export default class EditTask extends React.Component{
     render(){
         return( 
             <div> 
-                <button onClick={ () => this.goBack() }> Back </button>
-                <button onClick={ () => this.saveTask() } style={ {float:'right'}}> Save</button>
-                <p>{this.state.task.name} </p>
-                <div id="timer">
-                    <p>
-                        Total time: {this.state.totalTime}
-                    </p>
-                    
-                    <button className="timerButton" onClick={ () => this.startTimer() }> start </button> 
-                    <button className="timerButton" onClick={ () => this.stopTimer() }> stop </button>
-                </div>
-                <span> Notes </span> 
-                <br />
-                <textarea className="notesArea"></textarea>
+                <form onSubmit={ this.saveTask }>
+                    <button onClick={ () => this.goBack()} type="button"> Back </button>
+                    <button style={ {float:'right'}} type="submit"> Save</button>
+                    <p>{this.props.task.name} </p>
+                    <div id="timer">
+                        <p>
+                            Total time: {this.state.formattedTime}
+                        </p>
+                        
+                        <button className="timerButton" onClick={ () => this.startTimer() } type="button"> start </button> 
+                        <button className="timerButton" onClick={ () => this.stopTimer() } type="button"> stop </button>
+                    </div>
+                    <span> Notes </span> 
+                    <br />
+                    <textarea name="notes" className="notesArea" defaultValue={this.props.task.notes}  ></textarea>
+                </form>
             </div> 
         );
     }

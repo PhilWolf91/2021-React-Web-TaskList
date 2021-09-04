@@ -11,11 +11,11 @@ class App extends React.Component {
     
     let storedTasks = localStorage.getItem('tasks');
     let tasks = storedTasks ? JSON.parse(storedTasks) : []; 
-    let hasTasks = tasks.length > 0;
 
-    this.state = { tasks: tasks, hasTasks: hasTasks };
+    this.state = { tasks: tasks };
     this.addTask = this.addTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.saveTask = this.saveTask.bind(this);
   }
 
   clearTasks(){
@@ -38,6 +38,16 @@ class App extends React.Component {
       localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 
+  }
+
+  saveTask(task){
+    console.log("save task", task);
+    let tasks = this.state.tasks.slice();
+    let taskIndex = tasks.findIndex( (t) => t.id === task.id);
+    tasks[taskIndex] = task;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    this.setState( {...this.state, tasks: tasks});
   }
 
   deleteTask(task){
@@ -64,7 +74,7 @@ class App extends React.Component {
 
   renderFoundTasks(){
     return (
-      <TaskList addNewTask={ this.addTask } tasks={ this.state.tasks } deleteTask={ this.deleteTask } />
+      <TaskList addNewTask={ this.addTask } tasks={ this.state.tasks } deleteTask={ this.deleteTask } saveTask={ this.saveTask } />
     )
   }
 
