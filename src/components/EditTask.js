@@ -66,16 +66,18 @@ export default class EditTask extends React.Component{
                 <form onSubmit={ this.saveTask }>
                     <button onClick={ () => this.goBack()} type="button"> Back </button>
                     <button style={ {float:'right'}} type="submit"> Save</button>
+                    <h2> Task </h2>
                     <p>{this.props.task.name} </p>
                     <div id="timer">
+                        <h2>Timer</h2>
                         <p>
                             Total time: {this.state.formattedTime}
                         </p>
                         
                         <button className="timerButton" onClick={ () => this.startTimer() } type="button"> start </button> 
-                        <button className="timerButton" onClick={ () => this.stopTimer() } type="button"> stop </button>
+                        <button className="timerButton right" onClick={ () => this.stopTimer() } type="button"> stop </button>
                     </div>
-                    <span> Notes </span> 
+                    <h2> Notes </h2> 
                     <br />
                     <textarea name="notes" className="notesArea" defaultValue={this.props.task.notes}  ></textarea>
                 </form>
